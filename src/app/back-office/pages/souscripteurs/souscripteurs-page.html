@@ -1,0 +1,445 @@
+<div class="px-6 py-6">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-brand-navy">Souscripteurs</h1>
+      <p class="mt-1 text-sm text-slate-500">Les sociétés transitaires et leurs comptes rattachés.</p>
+    </div>
+    <button
+      type="button"
+      (click)="openDrawer()"
+      class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+    >
+      + Nouveau souscripteur
+    </button>
+  </div>
+
+  <div class="mt-6 flex gap-1 rounded-xl bg-slate-100 p-1 sm:inline-flex" role="tablist" aria-label="Filtrer les souscripteurs">
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="vue() === 'actifs'"
+      (click)="vue.set('actifs')"
+      class="cursor-pointer rounded-lg px-4 py-1.5 text-sm font-semibold transition-colors"
+      [class]="vue() === 'actifs' ? 'bg-white text-brand-navy shadow-sm' : 'text-slate-500 hover:text-brand-navy'"
+    >
+      Actifs <span class="ml-1 text-xs text-slate-400">{{ nbActifs() }}</span>
+    </button>
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="vue() === 'archives'"
+      (click)="vue.set('archives')"
+      class="cursor-pointer rounded-lg px-4 py-1.5 text-sm font-semibold transition-colors"
+      [class]="vue() === 'archives' ? 'bg-white text-brand-navy shadow-sm' : 'text-slate-500 hover:text-brand-navy'"
+    >
+      Archivés <span class="ml-1 text-xs text-slate-400">{{ nbArchives() }}</span>
+    </button>
+  </div>
+
+  <div class="mt-4">
+    <app-data-table [columns]="columns" [minWidth]="980">
+      <tbody class="divide-y divide-slate-100">
+        @for (s of visibleSouscripteurs(); track s.ninea) {
+          <tr [class.opacity-70]="s.archived">
+            <td class="px-5 py-3">
+              <p class="text-sm font-semibold text-brand-navy">{{ s.raisonSociale }}</p>
+              <p class="mt-0.5 font-mono text-[11px] text-slate-400">{{ s.ninea }}</p>
+            </td>
+            <td class="px-5 py-3 font-mono text-xs text-slate-500">{{ s.agentEmail }}</td>
+            <td class="px-5 py-3 text-slate-600">{{ s.agent }}</td>
+            <td class="px-5 py-3 text-slate-600">{{ s.cadNom || '—' }}</td>
+            <td class="px-5 py-3">
+              <span class="rounded-full bg-[#1F5DA8]/10 px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-[#1F5DA8]">{{ s.nbContrats }} contrat{{ s.nbContrats > 1 ? 's' : '' }}</span>
+            </td>
+            <td class="px-5 py-3">
+              <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="s.archived ? 'bg-slate-200 text-slate-600' : 'bg-emerald-50 text-emerald-600'">{{ s.archived ? 'Archivé' : 'Actif' }}</span>
+            </td>
+            <td class="px-5 py-3 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button type="button" (click)="openDetails(s.ninea)" class="cursor-pointer text-xs font-semibold whitespace-nowrap text-[#1F5DA8] hover:underline">
+                  Détails →
+                </button>
+                <app-row-menu (opened)="confirmingNinea.set(null)">
+                  <button
+                    type="button"
+                    (click)="openEdit(s)"
+                    class="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-2 text-left text-sm text-brand-navy transition-colors hover:bg-slate-50"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0 text-slate-400">
+                      <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Z" />
+                    </svg>
+                    Modifier
+                  </button>
+                  <button
+                    type="button"
+                    (click)="toggleArchive(s)"
+                    class="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-2 text-left text-sm text-brand-navy transition-colors hover:bg-slate-50"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0 text-slate-400">
+                      <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                    </svg>
+                    {{ s.archived ? 'Restaurer' : 'Archiver' }}
+                  </button>
+                  @if (confirmingNinea() === s.ninea) {
+                    <button
+                      type="button"
+                      (click)="deleteSouscripteur(s)"
+                      class="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-2 text-left text-sm font-semibold text-rose-600 transition-colors hover:bg-rose-50"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                      Confirmer ?
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      (click)="confirmDelete(s.ninea)"
+                      class="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-2 text-left text-sm text-rose-600 transition-colors hover:bg-rose-50"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
+                      Supprimer
+                    </button>
+                  }
+                </app-row-menu>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="px-5 py-8 text-center text-sm text-slate-400">
+              {{ vue() === 'archives' ? 'Aucun souscripteur archivé.' : 'Aucun souscripteur actif.' }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </app-data-table>
+  </div>
+</div>
+
+<!-- CREATE DRAWER (backdrop stays below the persistent nav so navigation always works) -->
+<div
+  class="fixed inset-0 z-30 bg-brand-navy/40"
+  [style.opacity]="drawerOpen() ? 1 : 0"
+  [style.transition]="ready() ? 'opacity 300ms cubic-bezier(0.4,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+  (click)="closeDrawer()"
+></div>
+
+<aside
+  class="fixed right-0 top-0 z-[60] flex h-full w-full max-w-md flex-col bg-white shadow-2xl ease-out"
+  [style.transform]="drawerOpen() ? 'translateX(0)' : 'translateX(100%)'"
+  [style.transition]="ready() ? 'transform 300ms cubic-bezier(0,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+>
+    <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+      <p class="text-base font-bold text-brand-navy">{{ editingNinea() ? 'Modifier le souscripteur' : 'Nouveau souscripteur' }}</p>
+      <button type="button" (click)="closeDrawer()" class="text-slate-400 hover:text-brand-navy" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+          <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+      @if (created(); as result) {
+        <div class="flex flex-col items-center py-6 text-center">
+          <span class="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+            <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7">
+              <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          </span>
+          <h3 class="mt-4 text-base font-bold text-brand-navy">Souscripteur créé</h3>
+          <p class="mt-1 max-w-xs text-sm text-slate-500">
+            Communiquez ces identifiants au souscripteur par email pour sa première connexion.
+          </p>
+
+          <div class="mt-5 w-full rounded-xl border border-slate-200 bg-slate-50 p-4 text-left text-sm">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Email</p>
+            <p class="mt-1 font-mono text-brand-navy">{{ result.email }}</p>
+            <p class="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Mot de passe provisoire</p>
+            <p class="mt-1 font-mono text-brand-navy">{{ result.password }}</p>
+          </div>
+
+          <p class="mt-4 text-xs text-slate-400">
+            Un changement de mot de passe sera exigé dès la première connexion. Vous pouvez maintenant créer un
+            contrat pour ce souscripteur depuis « Voir détails ».
+          </p>
+        </div>
+      } @else {
+        <div>
+          <label for="souscripteur-email" class="text-sm font-medium text-brand-navy">
+            Email <span class="text-rose-500">*</span>
+          </label>
+          <input
+            id="souscripteur-email"
+            type="email"
+            [value]="formAgentEmail()"
+            (input)="onAgentEmailInput($event)"
+            placeholder="nom@entreprise.sn"
+            class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            [class]="touched() && !agentEmailValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+          />
+          <p class="mt-1.5 text-[11px] text-slate-400">
+            {{ editingNinea() ? "Changer l'email met à jour l'identifiant de connexion de l'agent transitaire ; le NINÉA, lui, n'est pas modifiable." : 'Un mot de passe provisoire sera généré ; le souscripteur devra le changer à sa première connexion.' }}
+          </p>
+          @if (touched() && !agentEmailValid()) {
+            <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer un email valide.</p>
+          }
+        </div>
+
+        <div class="mt-4">
+          <label for="souscripteur-ninea" class="text-sm font-medium text-brand-navy">
+            NINÉA <span class="text-rose-500">*</span>
+          </label>
+          <input
+            id="souscripteur-ninea"
+            type="text"
+            [value]="formNinea()"
+            (input)="onNineaInput($event)"
+            [readOnly]="!!editingNinea()"
+            placeholder="SN-0000000000"
+            class="mt-1.5 w-full rounded-lg border px-3 py-2.5 font-mono text-sm text-brand-navy placeholder:text-slate-400 read-only:cursor-not-allowed read-only:bg-slate-50 read-only:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            [class]="touched() && !nineaValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+          />
+          @if (touched() && !nineaValid()) {
+            <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer le NINÉA.</p>
+          }
+        </div>
+
+        <div class="mt-4">
+          <label for="souscripteur-raison" class="text-sm font-medium text-brand-navy">
+            Raison sociale <span class="text-rose-500">*</span>
+          </label>
+          <input
+            id="souscripteur-raison"
+            type="text"
+            [value]="formRaisonSociale()"
+            (input)="onRaisonSocialeInput($event)"
+            placeholder="Nom de la société"
+            class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            [class]="touched() && !raisonSocialeValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+          />
+          @if (touched() && !raisonSocialeValid()) {
+            <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer la raison sociale.</p>
+          }
+        </div>
+
+        <div class="mt-4">
+          <label for="souscripteur-adresse" class="text-sm font-medium text-brand-navy">Adresse</label>
+          <input
+            id="souscripteur-adresse"
+            type="text"
+            [value]="formAdresse()"
+            (input)="onAdresseInput($event)"
+            placeholder="Zone Industrielle, Dakar"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+          />
+        </div>
+
+        <div class="mt-6 border-t border-slate-100 pt-4">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Représentant — Agent transitaire</p>
+
+          <div class="mt-3">
+            <label for="souscripteur-agent-nom" class="text-sm font-medium text-brand-navy">
+              Nom complet <span class="text-rose-500">*</span>
+            </label>
+            <input
+              id="souscripteur-agent-nom"
+              type="text"
+              [value]="formAgentNom()"
+              (input)="onAgentNomInput($event)"
+              placeholder="Nom et prénom"
+              class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              [class]="touched() && !agentNomValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+            />
+            @if (touched() && !agentNomValid()) {
+              <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer un nom.</p>
+            }
+            <p class="mt-1.5 text-[11px] text-slate-400">Cet agent utilisera l'email ci-dessus pour se connecter.</p>
+          </div>
+        </div>
+
+        <div class="mt-6 border-t border-slate-100 pt-4">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Représentant — Superviseur (CAD) <span class="normal-case text-slate-400">— optionnel</span></p>
+
+          <div class="mt-3">
+            <label for="souscripteur-cad-nom" class="text-sm font-medium text-brand-navy">Nom complet</label>
+            <input
+              id="souscripteur-cad-nom"
+              type="text"
+              [value]="formCadNom()"
+              (input)="onCadNomInput($event)"
+              placeholder="Nom et prénom"
+              class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            />
+          </div>
+
+          <div class="mt-3">
+            <label for="souscripteur-cad-email" class="text-sm font-medium text-brand-navy">Email</label>
+            <input
+              id="souscripteur-cad-email"
+              type="email"
+              [value]="formCadEmail()"
+              (input)="onCadEmailInput($event)"
+              placeholder="nom@entreprise.sn"
+              class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              [class]="touched() && !cadEmailValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+            />
+            @if (touched() && !cadEmailValid()) {
+              <p class="mt-1.5 text-xs text-rose-500">Email invalide.</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="flex justify-end gap-2 border-t border-slate-100 px-6 py-4">
+      @if (created()) {
+        <button
+          type="button"
+          (click)="closeDrawer()"
+          class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+        >
+          Terminé
+        </button>
+      } @else {
+        <button type="button" (click)="closeDrawer()" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-500 hover:bg-slate-50">
+          Annuler
+        </button>
+        <button
+          type="button"
+          (click)="submit()"
+          class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+        >
+          {{ editingNinea() ? 'Enregistrer' : 'Créer le souscripteur' }}
+        </button>
+      }
+    </div>
+</aside>
+
+<!-- DETAILS POPUP -->
+<app-modal [open]="!!selected()" [title]="selected()?.raisonSociale ?? null" [subtitle]="selected()?.ninea ?? null" (closed)="closeDetails()">
+  @if (selected(); as s) {
+    <dl class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Email</dt>
+        <dd class="mt-1 font-mono text-sm font-medium text-brand-navy">{{ s.agentEmail }}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Adresse</dt>
+        <dd class="mt-1 text-sm font-medium text-brand-navy">{{ s.adresse }}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Agent transitaire</dt>
+        <dd class="mt-1 text-sm font-medium text-brand-navy">{{ s.agent }}</dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Superviseur (CAD)</dt>
+        <dd class="mt-1 text-sm font-medium text-brand-navy">{{ s.cadNom || 'Non renseigné' }}</dd>
+      </div>
+    </dl>
+
+    <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+      <p class="text-sm font-semibold text-brand-navy">Contrats ({{ s.contrats.length }})</p>
+      @if (!creatingContract() && !s.archived) {
+        <button
+          type="button"
+          (click)="openCreateContract()"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-[#1F5DA8] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+        >
+          <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5">
+            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Nouveau contrat
+        </button>
+      }
+    </div>
+
+    @if (creatingContract()) {
+      <div class="mt-4 rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ editingContratNumero() ? 'Modifier le contrat ' + editingContratNumero() : 'Nouveau contrat' }}</p>
+        <div class="mt-3">
+          <label class="text-xs font-medium text-brand-navy">Libellé <span class="text-rose-500">*</span></label>
+          <input
+            type="text"
+            [value]="formContratLibelle()"
+            (input)="formContratLibelle.set($any($event.target).value)"
+            placeholder="Ex : Transit Maritime Annuel"
+            class="mt-1.5 w-full rounded-lg border px-3 py-2 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            [class]="contractTouched() && !contratLibelleValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+          />
+        </div>
+        <div class="mt-3">
+          <label class="text-xs font-medium text-brand-navy">Montant total <span class="text-rose-500">*</span></label>
+          <input
+            type="text"
+            [value]="formContratMontant()"
+            (input)="formContratMontant.set($any($event.target).value)"
+            placeholder="Ex : 20 000 000 FCFA"
+            class="mt-1.5 w-full rounded-lg border px-3 py-2 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            [class]="contractTouched() && !contratMontantValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+          />
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-medium text-brand-navy">Date de début</label>
+            <input
+              type="date"
+              [value]="formContratDateDebut()"
+              (input)="formContratDateDebut.set($any($event.target).value)"
+              class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-brand-navy focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-brand-navy">Date de fin</label>
+            <input
+              type="date"
+              [value]="formContratDateFin()"
+              (input)="formContratDateFin.set($any($event.target).value)"
+              class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-brand-navy focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            />
+          </div>
+        </div>
+        <div class="mt-4 flex justify-end gap-2">
+          <button type="button" (click)="cancelCreateContract()" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-white">Annuler</button>
+          <button
+            type="button"
+            (click)="submitContract()"
+            class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+          >
+            {{ editingContratNumero() ? 'Enregistrer' : 'Créer le contrat' }}
+          </button>
+        </div>
+      </div>
+    }
+
+    <div class="mt-4 space-y-2">
+      @for (c of s.contrats; track c.numero) {
+        <div class="rounded-xl border border-slate-100 p-3">
+          <div class="flex items-center justify-between">
+            <p class="font-mono text-xs font-medium text-[#1F5DA8]">{{ c.numero }}</p>
+            <div class="flex items-center gap-2">
+              <span class="rounded-full px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap" [class]="c.statutClass">{{ c.statut }}</span>
+              <button
+                type="button"
+                (click)="openEditContract(c)"
+                class="text-[11px] font-semibold text-[#1F5DA8] hover:underline"
+              >
+                Modifier
+              </button>
+            </div>
+          </div>
+          <p class="mt-1 text-sm font-medium text-brand-navy">{{ c.libelle }}</p>
+          <p class="mt-1 text-xs text-slate-400">{{ c.montantTotal }} · {{ c.dateDebut }} → {{ c.dateFin }}</p>
+        </div>
+      } @empty {
+        @if (!creatingContract()) {
+          <p class="text-sm text-slate-400">Aucun contrat pour ce souscripteur.</p>
+        }
+      }
+    </div>
+  }
+</app-modal>

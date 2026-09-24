@@ -1,0 +1,83 @@
+<footer class="bg-brand-navy-dark px-6 pb-6 pt-16 text-white sm:px-10">
+    <div class="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="lg:col-span-1.5">
+            <div class="flex items-center gap-2">
+                <img src="/axa.png" alt="AXA Assurance" class="h-10 w-auto" />
+                <div class="leading-tight text-white">
+                    <span class="font-bold">{{ t().brandName }}</span>
+                    <!-- <p class="text-xs text-white/70">{{ t().brandTagline }}</p> -->
+                </div>
+            </div>
+            <p class="mt-4 text-sm text-white/60">
+                {{ t().tagline }}
+            </p>
+            <div class="mt-5 flex items-center gap-2">
+                <a href="#" aria-label="LinkedIn" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold hover:bg-white/20">in</a>
+                <a href="#" aria-label="Facebook" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold hover:bg-white/20">f</a>
+                <a href="#" aria-label="Instagram" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold hover:bg-white/20">ig</a>
+                <a href="#" aria-label="X" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold hover:bg-white/20">X</a>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-sm font-semibold text-white">{{ t().navigation }}</h3>
+            <ul class="mt-4 space-y-2 text-sm text-white/60">
+                <li><a routerLink="/accueil" class="hover:text-white">{{ t().home }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().about }}</a></li>
+                <li><a routerLink="/services" [queryParams]="{ tab: 'contrats' }" class="hover:text-white">{{ t().contracts }}</a></li>
+                <li><a routerLink="/services" [queryParams]="{ tab: 'polices' }" class="hover:text-white">{{ t().policies }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().howItWorks }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().news }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().contact }}</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-sm font-semibold text-white">{{ t().clientArea }}</h3>
+            <ul class="mt-4 space-y-2 text-sm text-white/60">
+                <li><a routerLink="/auth/login" class="hover:text-white">{{ t().login }}</a></li>
+                <li><a routerLink="/services" [queryParams]="{ tab: 'cotation' }" class="hover:text-white">{{ t().requestQuote }}</a></li>
+                <li><a routerLink="/services" [queryParams]="{ tab: 'operations' }" class="hover:text-white">{{ t().trackRequests }}</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-sm font-semibold text-white">{{ t().information }}</h3>
+            <ul class="mt-4 space-y-2 text-sm text-white/60">
+                <li><a href="#" class="hover:text-white">{{ t().faq }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().legalNotice }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().terms }}</a></li>
+                <li><a href="#" class="hover:text-white">{{ t().privacy }}</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-sm font-semibold text-white">{{ t().contactUs }}</h3>
+            <ul class="mt-4 space-y-3 text-sm text-white/60">
+                <li class="flex items-start gap-2">
+                    <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a2.25 2.25 0 0 0-2.235.58l-.977.978a11.25 11.25 0 0 1-6.336-6.336l.978-.977a2.25 2.25 0 0 0 .58-2.235L6.63 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                    </svg>
+                    +221 33 123 45 67
+                </li>
+                <li class="flex items-start gap-2">
+                    <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0a2.25 2.25 0 0 0-2.25-2.25h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                    contact&#64;axa-assurance.sn
+                </li>
+                <li class="flex items-start gap-2">
+                    <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
+                    {{ lang() === 'en' ? 'Dakar, Senegal' : 'Dakar, Sénégal' }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mx-auto mt-12 max-w-7xl border-t border-white/10 pt-6 text-center text-xs text-white/40">
+        © {{ currentYear }} AXA Assurance - {{ t().rightsReserved }}
+    </div>
+</footer>

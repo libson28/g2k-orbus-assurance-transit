@@ -1,0 +1,165 @@
+<div class="px-6 py-6">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-[#00008F]">Mon équipe</h1>
+      <p class="mt-1 text-sm text-slate-500">
+        Comptes Agent transitaire et Superviseur (CAD) rattachés à {{ souscripteur.raisonSociale }}.
+      </p>
+    </div>
+    @if (canManage()) {
+      <button
+        type="button"
+        (click)="openDrawer()"
+        class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+      >
+        + Nouveau membre
+      </button>
+    }
+  </div>
+
+  @if (soloMode() && membres().length === 0) {
+    <div class="mt-6 rounded-2xl border border-slate-100 bg-white p-6">
+      <p class="text-sm font-semibold text-brand-navy">Vous gérez votre activité seul(e)</p>
+      <p class="mt-1.5 text-sm text-slate-500">
+        Lors de votre inscription, vous avez choisi de ne pas créer d'équipe : votre compte agit à la fois comme
+        agent transitaire et superviseur. Vous pouvez continuer ainsi, ou ajouter des agents et superviseurs à
+        tout moment si votre activité évolue.
+      </p>
+    </div>
+  }
+
+  <div class="mt-6">
+    <app-data-table [columns]="columns" [minWidth]="640">
+      <tbody class="divide-y divide-slate-100">
+        @for (membre of membres(); track membre.email) {
+          <tr>
+            <td class="px-5 py-3 font-medium text-brand-navy">{{ membre.nom }}</td>
+            <td class="px-5 py-3">
+              <p class="text-slate-600">{{ membre.email }}</p>
+              <p class="text-xs text-slate-400">{{ membre.telephone }}</p>
+            </td>
+            <td class="px-5 py-3">
+              <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="membre.roleClass">{{ membre.role }}</span>
+            </td>
+            <td class="px-5 py-3">
+              <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="membre.statutClass">{{ membre.statut }}</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </app-data-table>
+  </div>
+</div>
+
+<!-- SIDE DRAWER (backdrop stays below the persistent nav so navigation always works) -->
+<div
+  class="fixed inset-0 z-30 bg-brand-navy/40"
+  [style.opacity]="drawerOpen() ? 1 : 0"
+  [style.transition]="ready() ? 'opacity 300ms cubic-bezier(0.4,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+  (click)="closeDrawer()"
+></div>
+
+<aside
+  class="fixed right-0 top-0 z-[60] flex h-full w-full max-w-md flex-col bg-white shadow-2xl ease-out"
+  [style.transform]="drawerOpen() ? 'translateX(0)' : 'translateX(100%)'"
+  [style.transition]="ready() ? 'transform 300ms cubic-bezier(0,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+>
+    <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+      <div>
+        <p class="text-base font-bold text-brand-navy">Nouveau membre</p>
+        <p class="mt-1 text-sm text-slate-500">Rattaché à {{ souscripteur.raisonSociale }}</p>
+      </div>
+      <button type="button" (click)="closeDrawer()" class="text-slate-400 hover:text-brand-navy" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+          <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+      <div>
+        <label class="text-xs font-semibold uppercase tracking-wide text-slate-400">Rôle</label>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            (click)="setRole('Agent transitaire')"
+            class="rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors"
+            [class]="formRole() === 'Agent transitaire' ? 'border-[#1F5DA8] bg-[#1F5DA8]/10 text-[#1F5DA8]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'"
+          >
+            Agent transitaire
+          </button>
+          <button
+            type="button"
+            (click)="setRole('Superviseur (CAD)')"
+            class="rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors"
+            [class]="formRole() === 'Superviseur (CAD)' ? 'border-[#1F5DA8] bg-[#1F5DA8]/10 text-[#1F5DA8]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'"
+          >
+            Superviseur (CAD)
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <label for="membre-nom" class="text-sm font-medium text-brand-navy">
+          Nom complet <span class="text-rose-500">*</span>
+        </label>
+        <input
+          id="membre-nom"
+          type="text"
+          [value]="formNom()"
+          (input)="onNomInput($event)"
+          placeholder="Nom et prénom"
+          class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+          [class]="touched() && !nomValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+        />
+        @if (touched() && !nomValid()) {
+          <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer un nom.</p>
+        }
+      </div>
+
+      <div class="mt-4">
+        <label for="membre-email" class="text-sm font-medium text-brand-navy">
+          Email <span class="text-rose-500">*</span>
+        </label>
+        <input
+          id="membre-email"
+          type="email"
+          [value]="formEmail()"
+          (input)="onEmailInput($event)"
+          placeholder="nom@entreprise.sn"
+          class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+          [class]="touched() && !emailValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+        />
+        @if (touched() && !emailValid()) {
+          <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer un email valide.</p>
+        }
+      </div>
+
+      <div class="mt-4">
+        <label for="membre-telephone" class="text-sm font-medium text-brand-navy">Téléphone</label>
+        <input
+          id="membre-telephone"
+          type="tel"
+          [value]="formTelephone()"
+          (input)="onTelephoneInput($event)"
+          placeholder="+221 77 000 00 00"
+          class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 border-t border-slate-100 px-6 py-4">
+      <button type="button" (click)="closeDrawer()" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-500 hover:bg-slate-50">
+        Annuler
+      </button>
+      <button
+        type="button"
+        (click)="submit()"
+        class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+      >
+        Créer le compte
+      </button>
+    </div>
+</aside>

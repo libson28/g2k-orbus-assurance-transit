@@ -1,0 +1,350 @@
+<div class="px-6 py-6">
+  <div>
+    <h1 class="text-2xl font-bold text-[#00008F]">Nouvelle demande de cotation</h1>
+    <p class="mt-1 text-sm text-slate-500">Informations → Polices → Documents → Récapitulatif.</p>
+  </div>
+
+  @if (!submitted()) {
+    <!-- STEP INDICATOR -->
+    <div class="mt-6">
+      <app-wizard-stepper [steps]="steps" [current]="step()" (stepClick)="goToStep($event)" />
+    </div>
+
+    <!-- STEP CONTENT -->
+    <div class="mt-6 rounded-2xl border border-slate-100 bg-white p-6">
+      @switch (step()) {
+        @case (1) {
+          <h2 class="text-sm font-semibold text-brand-navy">Informations sur la marchandise</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Nature <span class="text-rose-500">*</span></label>
+              <input
+                type="text"
+                [value]="nature()"
+                (input)="onNatureInput($event)"
+                placeholder="Ex : Équipements électroniques"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Valeur <span class="text-rose-500">*</span></label>
+              <input
+                type="text"
+                [value]="valeur()"
+                (input)="onValeurInput($event)"
+                placeholder="Ex : 12 000 000 FCFA"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Quantité <span class="text-rose-500">*</span></label>
+              <input
+                type="text"
+                [value]="quantite()"
+                (input)="onQuantiteInput($event)"
+                placeholder="Ex : 3 conteneurs 40 pieds"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Poids / Volume</label>
+              <input
+                type="text"
+                [value]="poidsVolume()"
+                (input)="onPoidsVolumeInput($event)"
+                placeholder="Ex : 12,4 tonnes"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Type d'emballage</label>
+              <input
+                type="text"
+                [value]="typeEmballage()"
+                (input)="onTypeEmballageInput($event)"
+                placeholder="Ex : Caisses palettisées"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="text-xs font-medium text-brand-navy">Description</label>
+              <textarea
+                rows="2"
+                [value]="description()"
+                (input)="onDescriptionInput($event)"
+                placeholder="Décrivez la marchandise transportée…"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              ></textarea>
+            </div>
+          </div>
+
+          <h2 class="mt-6 text-sm font-semibold text-brand-navy">Informations sur le transport</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label class="text-xs font-medium text-brand-navy">Mode de transport <span class="text-rose-500">*</span></label>
+              <div class="mt-1.5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                @for (mode of modesTransport; track mode) {
+                  <button
+                    type="button"
+                    (click)="setModeTransport(mode)"
+                    class="rounded-lg border px-3 py-2 text-sm font-semibold transition-colors"
+                    [class]="modeTransport() === mode ? 'border-[#1F5DA8] bg-[#1F5DA8]/5 text-[#1F5DA8]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'"
+                  >
+                    {{ mode }}
+                  </button>
+                }
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Date de départ <span class="text-rose-500">*</span></label>
+              <input
+                type="date"
+                [value]="dateDepart()"
+                (input)="onDateDepartInput($event)"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Date d'arrivée <span class="text-rose-500">*</span></label>
+              <input
+                type="date"
+                [value]="dateArrivee()"
+                (input)="onDateArriveeInput($event)"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Destination <span class="text-rose-500">*</span></label>
+              <input
+                type="text"
+                [value]="destination()"
+                (input)="onDestinationInput($event)"
+                placeholder="Ex : Bamako, Mali"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">Transporteur</label>
+              <input
+                type="text"
+                [value]="transporteur()"
+                (input)="onTransporteurInput($event)"
+                placeholder="Nom du transporteur"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-brand-navy">N° véhicule / navire / conteneur</label>
+              <input
+                type="text"
+                [value]="numeroVehicule()"
+                (input)="onNumeroVehiculeInput($event)"
+                placeholder="Ex : DK-2345-AB"
+                class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+              />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="text-xs font-medium text-brand-navy">Type de couverture <span class="text-rose-500">*</span></label>
+              <div class="mt-1.5 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                @for (type of typesCouverture; track type) {
+                  <button
+                    type="button"
+                    (click)="setTypeCouverture(type)"
+                    class="rounded-lg border px-3 py-2 text-sm font-semibold transition-colors"
+                    [class]="typeCouverture() === type ? 'border-[#1F5DA8] bg-[#1F5DA8]/5 text-[#1F5DA8]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'"
+                  >
+                    {{ type }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-6 text-xs text-slate-400">Date de la demande : <span class="font-medium text-brand-navy">{{ dateDemande }}</span></p>
+        }
+
+        @case (2) {
+          <h2 class="text-sm font-semibold text-brand-navy">Choisissez les polices d'assurance à souscrire</h2>
+
+          <div class="relative mt-3 max-w-sm">
+            <svg viewBox="0 0 24 24" fill="none" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true">
+              <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M18.5 11a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+            </svg>
+            <input
+              type="search"
+              [value]="policeSearch()"
+              (input)="onPoliceSearchInput($event)"
+              placeholder="Rechercher une police…"
+              aria-label="Rechercher une police"
+              class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-4 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+            />
+          </div>
+
+          <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            @for (p of filteredPolices(); track p.code) {
+              <button
+                type="button"
+                (click)="togglePolice(p.code)"
+                class="flex w-full flex-col items-start gap-2 rounded-xl border p-3 text-left transition-colors"
+                [class]="selectedPoliceCodes().includes(p.code) ? 'border-[#1F5DA8] bg-[#1F5DA8]/5' : 'border-slate-200 hover:bg-slate-50'"
+              >
+                <span class="flex w-full items-start gap-2.5">
+                  <span
+                    class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border"
+                    [class]="selectedPoliceCodes().includes(p.code) ? 'border-[#1F5DA8] bg-[#1F5DA8] text-white' : 'border-slate-300 text-transparent'"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" class="h-3 w-3">
+                      <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </span>
+                  <span class="min-w-0 text-sm font-medium text-brand-navy">{{ p.libelle }}</span>
+                </span>
+                <span class="block text-xs text-slate-500">{{ p.description }}</span>
+              </button>
+            } @empty {
+              <p class="col-span-full py-6 text-center text-sm text-slate-400">Aucune police ne correspond à « {{ policeSearch() }} ».</p>
+            }
+          </div>
+        }
+
+        @case (3) {
+          <h2 class="text-sm font-semibold text-brand-navy">Documents justificatifs</h2>
+          <p class="mt-1 text-xs text-slate-400">Pièces attendues pour les polices sélectionnées à l'étape précédente.</p>
+
+          <div class="mt-4 space-y-5">
+            @for (p of selectedPolicesList(); track p.code) {
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ p.libelle }}</p>
+                <div class="mt-2 space-y-2">
+                  @for (row of pieceRows(); track row.key) {
+                    @if (row.policeCode === p.code) {
+                      <div class="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 p-3">
+                        <span class="min-w-[160px] flex-1 text-sm text-brand-navy">{{ row.label }}</span>
+                        <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-xs font-medium text-slate-500 hover:border-[#1F5DA8] hover:text-[#1F5DA8]">
+                          <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                            <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3.75 3.75 0 0 1 4.157 3.985A4.502 4.502 0 0 1 18 19.5H6.75Z" />
+                          </svg>
+                          {{ documentFiles()[row.key] ?? 'Choisir un fichier' }}
+                          <input type="file" class="hidden" (change)="onPieceFileSelected(row.key, $event)" />
+                        </label>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+            } @empty {
+              <p class="mt-4 text-sm text-slate-400">Aucune pièce requise — revenez à l'étape « Polices » pour en sélectionner.</p>
+            }
+          </div>
+        }
+
+        @case (4) {
+          <h2 class="text-sm font-semibold text-brand-navy">Vérifiez votre demande</h2>
+          <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <dt class="text-xs text-slate-400">Nature de la marchandise</dt>
+              <dd class="mt-1 text-sm font-semibold text-brand-navy">{{ nature() }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-slate-400">Valeur</dt>
+              <dd class="mt-1 text-sm font-semibold text-brand-navy">{{ valeur() }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-slate-400">Quantité</dt>
+              <dd class="mt-1 text-sm text-slate-600">{{ quantite() }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-slate-400">Poids / Volume</dt>
+              <dd class="mt-1 text-sm text-slate-600">{{ poidsVolume() || '—' }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-slate-400">Transport</dt>
+              <dd class="mt-1 text-sm font-semibold text-brand-navy">{{ modeTransport() }} · {{ typeCouverture() }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-slate-400">Trajet</dt>
+              <dd class="mt-1 text-sm text-slate-600">{{ dateDepart() }} → {{ destination() }} ({{ dateArrivee() }})</dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-xs text-slate-400">Polices</dt>
+              <dd class="mt-1 flex flex-wrap gap-2">
+                @for (p of selectedPolicesList(); track p.code) {
+                  <span class="rounded-full bg-[#1F5DA8]/10 px-2.5 py-1 text-xs font-medium text-[#1F5DA8]">
+                    {{ p.libelle }}
+                  </span>
+                }
+              </dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-xs text-slate-400">Documents joints</dt>
+              <dd class="mt-1 text-sm text-slate-600">
+                @for (row of pieceRows(); track row.key) {
+                  <div>{{ row.label }} — {{ documentFiles()[row.key] ?? 'aucun fichier' }}</div>
+                } @empty {
+                  Aucun document
+                }
+              </dd>
+            </div>
+            <div>
+              <dt class="text-xs text-slate-400">Date de la demande</dt>
+              <dd class="mt-1 text-sm font-semibold text-brand-navy">{{ dateDemande }}</dd>
+            </div>
+          </dl>
+        }
+      }
+    </div>
+
+    <!-- FOOTER NAV — collée au bas de l'écran pendant le défilement du formulaire, mais ne déborde
+         jamais au-delà de la fin de celui-ci (position sticky, bornée par son conteneur). -->
+    <div class="sticky bottom-0 z-30 -mx-6 mt-6 flex items-center justify-between border-t border-slate-200 bg-white/95 px-6 py-4 backdrop-blur-sm">
+      <button
+        type="button"
+        (click)="goBack()"
+        [disabled]="step() === 1"
+        class="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-brand-navy transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Précédent
+      </button>
+
+      @if (step() < 4) {
+        <button
+          type="button"
+          (click)="goNext()"
+          [disabled]="!canContinue()"
+          class="rounded-xl bg-[#1F5DA8] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Suivant
+        </button>
+      } @else {
+        <button
+          type="button"
+          (click)="submit()"
+          class="rounded-xl bg-[#6BAF00] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#6BAF00]/90"
+        >
+          Envoyer la demande
+        </button>
+      }
+    </div>
+  } @else {
+    <!-- CONFIRMATION -->
+    <div class="mt-10 flex flex-col items-center rounded-2xl border border-slate-100 bg-white p-10 text-center">
+      <span class="flex h-14 w-14 items-center justify-center rounded-full bg-[#6BAF00]/10 text-[#6BAF00]">
+        <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7">
+          <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+      </span>
+      <h2 class="mt-4 text-lg font-bold text-brand-navy">Demande envoyée</h2>
+      <p class="mt-2 max-w-sm text-sm text-slate-500">
+        Votre demande {{ submittedNumero() }} a été transmise à l'agent assureur. Vous serez notifié dès qu'une
+        cotation ou une demande de complément sera disponible.
+      </p>
+      <button
+        type="button"
+        (click)="finish()"
+        class="mt-6 rounded-xl bg-[#1F5DA8] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+      >
+        Voir mes demandes
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,75 @@
+<div
+  class="toast-anim pointer-events-auto relative w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-200"
+  [class.toast-anim-out]="leaving()"
+  (mouseenter)="pause()"
+  (mouseleave)="resume()"
+  role="status"
+>
+  <div class="flex items-start gap-3 p-4 pr-9">
+    <span
+      class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+      [class]="{
+        success: 'bg-emerald-50 text-emerald-600',
+        error: 'bg-rose-50 text-rose-600',
+        warning: 'bg-amber-50 text-amber-600',
+        info: 'bg-[#1F5DA8]/10 text-[#1F5DA8]'
+      }[toast().variant]"
+    >
+      @switch (toast().variant) {
+        @case ('success') {
+          <svg viewBox="0 0 24 24" fill="none" class="h-4.5 w-4.5">
+            <path stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+          </svg>
+        }
+        @case ('error') {
+          <svg viewBox="0 0 24 24" fill="none" class="h-4.5 w-4.5">
+            <path stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        }
+        @case ('warning') {
+          <svg viewBox="0 0 24 24" fill="none" class="h-4.5 w-4.5">
+            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.947-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+          </svg>
+        }
+        @case ('info') {
+          <svg viewBox="0 0 24 24" fill="none" class="h-4.5 w-4.5">
+            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25h.75v5.25h.75M12 7.5h.008v.008H12V7.5Z" />
+            <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.6" />
+          </svg>
+        }
+      }
+    </span>
+
+    <div class="min-w-0 flex-1 pt-0.5">
+      <p class="text-sm font-semibold text-brand-navy">{{ toast().title }}</p>
+      @if (toast().description) {
+        <p class="mt-0.5 text-xs leading-relaxed text-slate-500">{{ toast().description }}</p>
+      }
+    </div>
+  </div>
+
+  <button
+    type="button"
+    (click)="startExit()"
+    class="absolute right-2.5 top-2.5 flex h-6 w-6 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+    aria-label="Fermer la notification"
+  >
+    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5">
+      <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  </button>
+
+  <div class="h-0.5 w-full bg-slate-100">
+    <div
+      class="toast-progress h-full"
+      [class]="{
+        success: 'bg-emerald-500',
+        error: 'bg-rose-500',
+        warning: 'bg-amber-500',
+        info: 'bg-[#1F5DA8]'
+      }[toast().variant]"
+      [style.animationDuration.ms]="toast().duration"
+      [style.animationPlayState]="paused() ? 'paused' : 'running'"
+    ></div>
+  </div>
+</div>

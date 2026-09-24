@@ -1,0 +1,40 @@
+<app-auth-shell
+  badge="Vérification 🔐"
+  title="Vérifiez votre identité"
+  subtitle="Un code de confirmation à 6 chiffres a été envoyé par SMS au numéro que vous avez renseigné."
+  [steps]="steps"
+  [activeStep]="2"
+>
+  <h2 class="text-2xl font-bold text-brand-navy">Entrez le code reçu</h2>
+  <p class="mt-2 text-sm text-slate-500">Code envoyé au <span class="font-medium text-brand-navy">+221 77 •••  •• 12</span></p>
+
+  <form class="mt-8 space-y-6">
+    <div class="flex justify-between gap-2">
+      @for (digit of digits(); track $index) {
+        <input
+          #digitInput
+          type="text"
+          inputmode="numeric"
+          maxlength="1"
+          [value]="digit"
+          (input)="onDigitInput($index, $event)"
+          (keydown)="onDigitKeydown($index, $event)"
+          class="h-14 w-12 rounded-xl border border-slate-200 bg-slate-50 text-center text-lg font-bold text-brand-navy focus:border-brand-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+        />
+      }
+    </div>
+
+    <button
+      (click)="verify()"
+      type="button"
+      class="w-full rounded-xl bg-[#00008F] py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#00008F]/90"
+    >
+      Vérifier
+    </button>
+
+    <p class="text-center text-sm text-slate-500">
+      Vous n'avez rien reçu ?
+      <button type="button" (click)="resend()" class="font-semibold text-brand-blue hover:underline">Renvoyer le code</button>
+    </p>
+  </form>
+</app-auth-shell>

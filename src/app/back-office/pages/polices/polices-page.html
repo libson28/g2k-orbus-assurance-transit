@@ -1,0 +1,180 @@
+<div class="px-6 py-6">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-brand-navy">Polices d'assurance</h1>
+      <p class="mt-1 text-sm text-slate-500">Catalogue des polices disponibles et des pièces attendues pour chacune.</p>
+    </div>
+    @if (canManage()) {
+      <button
+        type="button"
+        (click)="openDrawer()"
+        class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+      >
+        + Nouvelle police
+      </button>
+    }
+  </div>
+
+  <div class="mt-6">
+    <app-data-table [columns]="columns" [minWidth]="920">
+      <tbody class="divide-y divide-slate-100">
+        @for (police of polices(); track police.code) {
+          <tr>
+            <td class="px-5 py-3">
+              <span class="rounded-full bg-[#1F5DA8]/10 px-2.5 py-1 font-mono text-[11px] font-semibold text-[#1F5DA8]">{{ police.code }}</span>
+            </td>
+            <td class="px-5 py-3 text-sm font-semibold text-brand-navy">{{ police.libelle }}</td>
+            <td class="max-w-xs px-5 py-3 text-xs leading-relaxed text-slate-500">{{ police.objet }}</td>
+            <td class="px-5 py-3">
+              <div class="flex flex-wrap gap-1.5">
+                @for (piece of police.piecesAttendues; track piece) {
+                  <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600">{{ piece }}</span>
+                }
+              </div>
+            </td>
+            <td class="px-5 py-3 text-right">
+              @if (canManage()) {
+                <app-row-menu (opened)="confirmingCode.set(null)">
+                  <button
+                    type="button"
+                    (click)="openEdit(police)"
+                    class="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm text-brand-navy transition-colors hover:bg-slate-50"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0 text-slate-400">
+                      <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Z" />
+                    </svg>
+                    Modifier
+                  </button>
+                  @if (confirmingCode() === police.code) {
+                    <button
+                      type="button"
+                      (click)="deletePolice(police)"
+                      class="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm font-semibold text-rose-600 transition-colors hover:bg-rose-50"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                      Confirmer ?
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      (click)="confirmDelete(police.code)"
+                      class="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm text-rose-600 transition-colors hover:bg-rose-50"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
+                      Supprimer
+                    </button>
+                  }
+                </app-row-menu>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </app-data-table>
+  </div>
+</div>
+
+<!-- SIDE DRAWER (backdrop stays below the persistent nav so navigation always works) -->
+<div
+  class="fixed inset-0 z-30 bg-brand-navy/40"
+  [style.opacity]="drawerOpen() ? 1 : 0"
+  [style.transition]="ready() ? 'opacity 300ms cubic-bezier(0.4,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+  (click)="closeDrawer()"
+></div>
+
+<aside
+  class="fixed right-0 top-0 z-[60] flex h-full w-full max-w-md flex-col bg-white shadow-2xl ease-out"
+  [style.transform]="drawerOpen() ? 'translateX(0)' : 'translateX(100%)'"
+  [style.transition]="ready() ? 'transform 300ms cubic-bezier(0,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+>
+    <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+      <p class="text-base font-bold text-brand-navy">{{ editingCode() ? 'Modifier la police' : "Nouvelle police d'assurance" }}</p>
+      <button type="button" (click)="closeDrawer()" class="text-slate-400 hover:text-brand-navy" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+          <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+      <div>
+        <label for="police-code" class="text-sm font-medium text-brand-navy">
+          Code police <span class="text-rose-500">*</span>
+        </label>
+        <input
+          id="police-code"
+          type="text"
+          [value]="formCode()"
+          (input)="onCodeInput($event)"
+          placeholder="Ex : RC-PRO"
+          class="mt-1.5 w-full rounded-lg border px-3 py-2.5 font-mono text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+          [class]="touched() && !codeValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+        />
+        @if (touched() && !codeValid()) {
+          <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer un code.</p>
+        }
+      </div>
+
+      <div class="mt-4">
+        <label for="police-libelle" class="text-sm font-medium text-brand-navy">
+          Libellé <span class="text-rose-500">*</span>
+        </label>
+        <input
+          id="police-libelle"
+          type="text"
+          [value]="formLibelle()"
+          (input)="onLibelleInput($event)"
+          placeholder="Ex : Marchandises Transportées"
+          class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+          [class]="touched() && !libelleValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-[#1F5DA8]'"
+        />
+        @if (touched() && !libelleValid()) {
+          <p class="mt-1.5 text-xs text-rose-500">Merci d'indiquer un libellé.</p>
+        }
+      </div>
+
+      <div class="mt-4">
+        <label for="police-objet" class="text-sm font-medium text-brand-navy">Objet / couverture</label>
+        <textarea
+          id="police-objet"
+          rows="3"
+          [value]="formObjet()"
+          (input)="onObjetInput($event)"
+          placeholder="Décrivez ce que couvre cette police"
+          class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+        ></textarea>
+      </div>
+
+      <div class="mt-4">
+        <label for="police-pieces" class="text-sm font-medium text-brand-navy">Pièces attendues</label>
+        <input
+          id="police-pieces"
+          type="text"
+          [value]="formPieces()"
+          (input)="onPiecesInput($event)"
+          placeholder="Séparées par des virgules"
+          class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+        />
+        <p class="mt-1.5 text-xs text-slate-400">Ex : Facture commerciale, Liste de colisage</p>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 border-t border-slate-100 px-6 py-4">
+      <button type="button" (click)="closeDrawer()" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-500 hover:bg-slate-50">
+        Annuler
+      </button>
+      <button
+        type="button"
+        (click)="submit()"
+        class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+      >
+        {{ editingCode() ? 'Enregistrer' : 'Ajouter la police' }}
+      </button>
+    </div>
+</aside>

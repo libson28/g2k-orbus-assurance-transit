@@ -1,0 +1,47 @@
+<nav aria-label="Progression">
+  <ol class="flex w-full items-center justify-center">
+    @for (s of steps(); track s.n; let last = $last) {
+      <li class="shrink-0">
+        <button
+          type="button"
+          [disabled]="!interactive()"
+          (click)="stepClick.emit(s.n)"
+          class="flex items-center gap-2"
+          [class.cursor-default]="s.n >= current() || !interactive()"
+          [attr.aria-current]="s.n === current() ? 'step' : null"
+        >
+          <span
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors"
+            [class]="
+              s.n === current()
+                ? activeClass() + ' text-white'
+                : s.n < current()
+                  ? 'bg-[#6BAF00] text-white'
+                  : 'bg-slate-100 text-slate-400'
+            "
+          >
+            @if (s.n < current()) {
+              <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+                <path stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            } @else {
+              {{ s.n }}
+            }
+          </span>
+          <span
+            class="whitespace-nowrap text-xs font-medium"
+            [class]="
+              (many() ? (s.n === current() ? 'hidden sm:block' : 'hidden lg:block') : 'hidden sm:block') +
+              (s.n === current() ? ' text-brand-navy' : ' text-slate-400')
+            "
+          >
+            {{ s.label }}
+          </span>
+        </button>
+      </li>
+      @if (!last) {
+        <li aria-hidden="true" class="mx-1 h-px max-w-12 min-w-1 flex-1 sm:mx-2 lg:mx-3" [class]="s.n < current() ? 'bg-[#6BAF00]' : 'bg-slate-200'"></li>
+      }
+    }
+  </ol>
+</nav>

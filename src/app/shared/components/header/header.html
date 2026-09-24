@@ -1,0 +1,192 @@
+<header
+    class="fixed inset-x-0 top-0 z-30 transition-colors duration-300"
+    [class.bg-white]="appearsScrolled()"
+    [class.shadow-sm]="appearsScrolled()"
+    (window:scroll)="onWindowScroll()"
+    (document:click)="closeLangMenu()">
+    <div
+        class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 sm:px-10">
+        <a routerLink="/accueil" class="flex items-center gap-2"
+            (click)="closeMobileMenu()">
+            <img [src]="appearsScrolled() ? '/logo-axa.png' : '/axa.png'" alt="AXA Assurance" class="h-12 w-auto" />
+            <div class="hidden leading-tight transition-colors duration-300 sm:block"
+                [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'">
+                <span class="font-bold">{{ t().brandName }}</span>
+                <p class="text-xs" [class]="appearsScrolled() ? 'text-slate-500' : 'text-white/70'">{{ t().brandTagline }}</p>
+            </div>
+        </a>
+
+        <nav class="hidden items-center gap-8 text-sm font-medium lg:flex">
+            <a
+                routerLink="/accueil"
+                routerLinkActive="border-brand-blue text-brand-blue"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="border-b-2 border-transparent pb-1 transition-colors hover:text-brand-blue"
+                [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'">
+                {{ t().home }}
+            </a>
+            <a
+                routerLink="/services"
+                class="border-b-2 border-transparent pb-1 transition-colors hover:text-brand-blue"
+                [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'">
+                {{ t().contracts }}
+            </a>
+            <a
+                class="border-b-2 border-transparent pb-1 transition-colors hover:text-brand-blue"
+                [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'"
+                routerLink="/services"
+                [queryParams]="{ tab: 'polices' }">
+                {{ t().policies }}
+            </a>
+            <a
+                class="border-b-2 border-transparent pb-1 transition-colors hover:text-brand-blue"
+                [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'"
+                href="#">
+                {{ t().howItWorks }}
+            </a>
+            <a
+                class="border-b-2 border-transparent pb-1 transition-colors hover:text-brand-blue"
+                [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'"
+                href="#">
+                {{ t().contact }}
+            </a>
+        </nav>
+
+        <div class="hidden items-center gap-5 lg:flex">
+            <div class="relative">
+                <button
+                    type="button"
+                    class="flex items-center gap-1 text-sm font-medium transition-colors hover:text-brand-blue"
+                    [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'"
+                    (click)="toggleLangMenu($event)"
+                    [attr.aria-expanded]="langMenuOpen()"
+                    aria-haspopup="true"
+                    [attr.aria-label]="t().language">
+                    {{ lang() === 'fr' ? 'FR' : 'EN' }}
+                    <svg viewBox="0 0 20 20" fill="currentColor"
+                        class="h-4 w-4 transition-transform"
+                        [class.rotate-180]="langMenuOpen()">
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                @if (langMenuOpen()) {
+                <div
+                    class="absolute right-0 top-full mt-2 w-36 overflow-hidden rounded-lg bg-white py-1 shadow-lg ring-1 ring-slate-100"
+                    (click)="$event.stopPropagation()">
+                    <button
+                        type="button"
+                        (click)="selectLang('fr')"
+                        class="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-brand-navy transition-colors hover:bg-slate-50"
+                        [class.font-semibold]="lang() === 'fr'">
+                        Français
+                        @if (lang() === 'fr') {
+                        <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-brand-blue">
+                            <path fill-rule="evenodd" d="M16.704 5.29a.75.75 0 0 1 .006 1.06l-7.5 7.75a.75.75 0 0 1-1.08.02l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.955 2.955 6.977-7.212a.75.75 0 0 1 1.06-.023Z" clip-rule="evenodd" />
+                        </svg>
+                        }
+                    </button>
+                    <button
+                        type="button"
+                        (click)="selectLang('en')"
+                        class="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-brand-navy transition-colors hover:bg-slate-50"
+                        [class.font-semibold]="lang() === 'en'">
+                        English
+                        @if (lang() === 'en') {
+                        <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-brand-blue">
+                            <path fill-rule="evenodd" d="M16.704 5.29a.75.75 0 0 1 .006 1.06l-7.5 7.75a.75.75 0 0 1-1.08.02l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.955 2.955 6.977-7.212a.75.75 0 0 1 1.06-.023Z" clip-rule="evenodd" />
+                        </svg>
+                        }
+                    </button>
+                </div>
+                }
+            </div>
+
+            <a
+                routerLink="/auth/login"
+                class="flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold transition-colors hover:bg-[#1F5DA8] hover:text-white"
+                [class]="appearsScrolled() ? 'border-brand-navy/30 text-brand-navy' : 'border-white/30 text-white'">
+                <svg viewBox="0 0 20 20" fill="currentColor"
+                    class="h-4 w-4">
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+                        clip-rule="evenodd" />
+                </svg>
+                {{ t().portalCta }}
+            </a>
+        </div>
+
+        <button
+            type="button"
+            class="lg:hidden transition-colors"
+            [class]="appearsScrolled() ? 'text-brand-navy' : 'text-white'"
+            (click)="toggleMobileMenu()"
+            [attr.aria-expanded]="mobileMenuOpen()"
+            [attr.aria-label]="t().openMenu">
+            @if (mobileMenuOpen()) {
+            <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7">
+                <path
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    d="M6 6l12 12M18 6 6 18" />
+            </svg>
+            } @else {
+            <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7">
+                <path stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+            }
+        </button>
+    </div>
+
+    @if (mobileMenuOpen()) {
+    <div
+        class="mx-4 mt-2 flex flex-col gap-1 rounded-xl bg-white p-4 shadow-lg lg:hidden">
+        <a
+            class="rounded-md px-3 py-2 text-sm font-medium text-brand-navy hover:bg-[#1F5DA8]/5"
+            routerLink="/accueil" (click)="closeMobileMenu()">{{ t().home }}</a>
+        <a
+            class="rounded-md px-3 py-2 text-sm font-medium text-brand-navy hover:bg-[#1F5DA8]/5"
+            routerLink="/services" (click)="closeMobileMenu()">{{ t().contracts }}</a>
+        <a
+            class="rounded-md px-3 py-2 text-sm font-medium text-brand-navy hover:bg-[#1F5DA8]/5"
+            routerLink="/services" [queryParams]="{ tab: 'polices' }" (click)="closeMobileMenu()">{{ t().policies }}</a>
+        <a
+            class="rounded-md px-3 py-2 text-sm font-medium text-brand-navy hover:bg-[#1F5DA8]/5"
+            href="#">{{ t().howItWorks }}</a>
+        <a
+            class="rounded-md px-3 py-2 text-sm font-medium text-brand-navy hover:bg-[#1F5DA8]/5"
+            href="#">{{ t().contact }}</a>
+
+        <div class="mt-1 flex items-center gap-1 border-t border-slate-100 px-3 pt-3">
+            <span class="text-xs font-medium text-slate-400">{{ t().language }}</span>
+            <button
+                type="button"
+                (click)="selectLang('fr')"
+                class="ml-auto rounded-md px-2.5 py-1 text-xs font-semibold transition-colors"
+                [class]="lang() === 'fr' ? 'bg-[#1F5DA8] text-white' : 'text-slate-500 hover:bg-slate-100'">
+                FR
+            </button>
+            <button
+                type="button"
+                (click)="selectLang('en')"
+                class="rounded-md px-2.5 py-1 text-xs font-semibold transition-colors"
+                [class]="lang() === 'en' ? 'bg-[#1F5DA8] text-white' : 'text-slate-500 hover:bg-slate-100'">
+                EN
+            </button>
+        </div>
+
+        <a
+            routerLink="/auth/login"
+            (click)="closeMobileMenu()"
+            class="mt-2 rounded-md bg-[#1F5DA8] px-3 py-2 text-center text-sm font-semibold text-white">
+            {{ t().mobileCta }}
+        </a>
+    </div>
+    }
+</header>

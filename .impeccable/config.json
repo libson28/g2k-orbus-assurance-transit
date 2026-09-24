@@ -1,0 +1,36 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/app/shared/components/dashboard-shell/dashboard-shell.html"
+        ],
+        "createdAt": "2026-09-15T14:45:08.576Z",
+        "reason": "dynamic [src] binding to a real asset path (logoSrc()/logoSrcMobile() resolve to /logo2.png and /logo.png in public/), detector cannot evaluate Angular property bindings"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/app/espace-transitaire/pages/demandes-cotation/demandes-cotation-page.html",
+          "src/app/espace-transitaire/pages/operations/operations-page.html"
+        ],
+        "createdAt": "2026-09-21T13:24:25.506Z",
+        "reason": "Agent: img [src] is bound to /wave.png, /orange-money.png, /carte-bancaire.jpg; verified in browser (naturalWidth > 0), detector cannot resolve bindings"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/app/portail/pages/demande-publique/demande-publique-page.html"
+        ],
+        "createdAt": "2026-09-22T10:12:33.329Z",
+        "reason": "Agent: img [src] bound to /wave.png, /orange-money.png, /carte-bancaire.jpg (same pattern as demandes-cotation-page.html); verified loading in browser"
+      }
+    ]
+  }
+}

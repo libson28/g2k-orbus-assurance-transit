@@ -1,0 +1,28 @@
+<div class="relative inline-block text-left" (document:click)="close()" (window:scroll)="close()" (window:resize)="close()">
+  <button
+    type="button"
+    (click)="toggle($event)"
+    [attr.aria-expanded]="open()"
+    aria-haspopup="true"
+    aria-label="Actions"
+    class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+  >
+    <svg viewBox="0 0 24 24" fill="currentColor" class="h-4.5 w-4.5">
+      <circle cx="12" cy="5" r="1.75" />
+      <circle cx="12" cy="12" r="1.75" />
+      <circle cx="12" cy="19" r="1.75" />
+    </svg>
+  </button>
+
+  @if (open()) {
+    <div
+      class="fixed z-40 w-44 overflow-hidden rounded-xl bg-white py-1.5 text-left shadow-lg ring-1 ring-slate-100"
+      [style.top.px]="position().top ?? null"
+      [style.bottom.px]="position().bottom ?? null"
+      [style.right.px]="position().right"
+      (click)="$event.stopPropagation()"
+    >
+      <ng-content />
+    </div>
+  }
+</div>

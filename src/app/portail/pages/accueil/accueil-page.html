@@ -1,0 +1,592 @@
+<section class="relative min-h-screen overflow-hidden bg-[#00008F]">
+  <img src="/FFF.png" alt="Porte-conteneurs et avion cargo" class="absolute inset-0 h-full w-full object-cover" />
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/80 to-brand-navy/20"
+  ></div>
+  <div
+    class="absolute inset-0 bg-brand-blue/10 backdrop-blur-sm"
+    style="mask-image: linear-gradient(to right, transparent 2%, black 14%, black 32%, transparent 48%); -webkit-mask-image: linear-gradient(to right, transparent 2%, black 14%, black 32%, transparent 48%);"
+  ></div>
+
+  <div class="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-28 pb-16 sm:px-10">
+    <h1 class="max-w-xl text-4xl font-bold leading-tight text-white sm:text-5xl">
+      {{ t().hero.title1 }}
+      <br />
+      <span class="text-[#FFF]">{{ t().hero.title2 }}</span>
+      <br />
+      {{ t().hero.title3 }}
+    </h1>
+
+    <p class="mt-6 max-w-md text-base text-white/80">
+      {{ t().hero.subtitle }}
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <a
+        routerLink="/demander-une-cotation"
+        class="rounded-md bg-brand-lime px-6 py-3 text-sm font-semibold text-brand-navy transition-colors hover:brightness-95"
+      >
+        {{ t().hero.ctaPrimary }}
+      </a>
+      <a
+        routerLink="/suivre-ma-demande"
+        class="rounded-md border border-white/60 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+      >
+        {{ t().hero.ctaSecondary }}
+      </a>
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-x-10 gap-y-6">
+      <div class="flex items-center gap-3">
+        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300">
+          <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+            <path
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 3c2.755 0 5.455.232 8.083.678.712.12 1.217.751 1.217 1.473v3.848a15.75 15.75 0 0 1-8.382 13.9.75.75 0 0 1-.636 0A15.75 15.75 0 0 1 3.7 9V5.15c0-.722.505-1.353 1.217-1.473A48.416 48.416 0 0 1 12 3Z"
+            />
+            <path
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m9 12.75 2.25 2.25L15 9.75"
+            />
+          </svg>
+        </span>
+        <div>
+          <p class="text-sm font-semibold text-white">{{ t().trust[0].title }}</p>
+          <p class="text-xs text-white/60">{{ t().trust[0].subtitle }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-400/15 text-amber-300">
+          <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+            <path
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+        </span>
+        <div>
+          <p class="text-sm font-semibold text-white">{{ t().trust[1].title }}</p>
+          <p class="text-xs text-white/60">{{ t().trust[1].subtitle }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-400/15 text-sky-300">
+          <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+            <path
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+            />
+          </svg>
+        </span>
+        <div>
+          <p class="text-sm font-semibold text-white">{{ t().trust[2].title }}</p>
+          <p class="text-xs text-white/60">{{ t().trust[2].subtitle }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIONS RAPIDES -->
+<section appScrollReveal class="relative z-20 px-6 pb-16 pt-0 sm:px-10">
+  <div class="mx-auto -mt-12 grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+      <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#00008F] text-white">
+        <i class="ri-file-text-line text-2xl"></i>
+      </span>
+      <h3 class="mt-4 text-base font-semibold text-brand-navy">{{ t().actions.heading[0].title }}</h3>
+      <p class="mt-2 text-sm text-slate-500">{{ t().actions.heading[0].description }}</p>
+      <a routerLink="/services" [queryParams]="{ tab: 'cotation' }" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-blue hover:underline">
+        {{ t().actions.learnMore }}
+        <i class="ri-arrow-right-line text-base"></i>
+      </a>
+    </article>
+
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+      <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#00008F] text-white">
+        <i class="ri-line-chart-line text-2xl"></i>
+      </span>
+      <h3 class="mt-4 text-base font-semibold text-brand-navy">{{ t().actions.heading[1].title }}</h3>
+      <p class="mt-2 text-sm text-slate-500">{{ t().actions.heading[1].description }}</p>
+      <a routerLink="/services" [queryParams]="{ tab: 'operations' }" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-blue hover:underline">
+        {{ t().actions.learnMore }}
+        <i class="ri-arrow-right-line text-base"></i>
+      </a>
+    </article>
+
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+      <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#00008F] text-white">
+        <i class="ri-shield-check-line text-2xl" aria-hidden="true"></i>
+      </span>
+      <h3 class="mt-4 text-base font-semibold text-brand-navy">{{ t().actions.heading[2].title }}</h3>
+      <p class="mt-2 text-sm text-slate-500">{{ t().actions.heading[2].description }}</p>
+      <a routerLink="/services" [queryParams]="{ tab: 'polices' }" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-blue hover:underline">
+        {{ t().actions.learnMore }}
+        <i class="ri-arrow-right-line text-base"></i>
+      </a>
+    </article>
+
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+      <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#00008F] text-white">
+        <i class="ri-file-shield-2-line text-2xl"></i>
+      </span>
+      <h3 class="mt-4 text-base font-semibold text-brand-navy">{{ t().actions.heading[3].title }}</h3>
+      <p class="mt-2 text-sm text-slate-500">{{ t().actions.heading[3].description }}</p>
+      <a routerLink="/services" [queryParams]="{ tab: 'contrats' }" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-blue hover:underline">
+        {{ t().actions.learnMore }}
+        <i class="ri-arrow-right-line text-base"></i>
+      </a>
+    </article>
+  </div>
+</section>
+
+<!-- NOS POLICES D'ASSURANCE -->
+<section appScrollReveal class="bg-white px-6 py-16 sm:px-10">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid gap-6 sm:grid-cols-2 sm:items-center">
+      <div>
+        <h2 class="text-3xl font-bold leading-tight text-brand-navy sm:text-4xl">
+          {{ t().policiesSection.title1 }}<br class="hidden sm:block" />
+          {{ t().policiesSection.title2 }}
+        </h2>
+        <p class="mt-2 text-sm text-slate-500">{{ t().policiesSection.subtitle }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-slate-600">
+          {{ t().policiesSection.paragraph }}
+        </p>
+        <a
+          href="#"
+          class="mt-4 inline-flex items-center gap-2 rounded-full bg-[#00008F] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#00008F]/90"
+        >
+          {{ t().policiesSection.cta }}
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      @for (policy of policies(); track policy.title) {
+        <article class="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100">
+          <div class="relative px-5 pb-8 pt-5" [class]="policy.tintClass">
+            <div class="flex items-center justify-between">
+            </div>
+            <h3 class="mt-5 text-lg font-bold leading-snug text-brand-navy">{{ policy.title }}</h3>
+            <p class="mt-2 text-sm text-slate-600">{{ policy.description }}</p>
+          </div>
+
+          <div class="relative h-96">
+            <img [src]="policy.image" [alt]="policy.title" class="h-full w-full object-cover rounded-xl" />
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-navy/80 via-brand-navy/10 to-transparent"></div>
+            <!-- <a
+              href="#"
+              class="absolute bottom-4 left-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-navy shadow-md transition-colors hover:bg-white/90"
+            >
+              Voir les détails
+              <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5">
+                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </a> -->
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section appScrollReveal class="bg-white px-6 py-16 sm:px-10">
+  <div class="mx-auto max-w-6xl">
+    <span class="inline-flex items-center gap-2 rounded-full bg-brand-blue/10 px-3 py-1 text-xs font-semibold text-brand-blue">
+      <span class="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>
+      {{ t().howItWorks.badge }}
+    </span>
+    <h2 class="mt-4 max-w-2xl text-3xl font-bold leading-tight text-brand-navy sm:text-4xl">
+      {{ t().howItWorks.heading }}
+    </h2>
+
+    <div #processSection class="mt-20 overflow-x-auto">
+      <div class="flex min-w-[640px] items-end justify-between gap-4 px-2">
+        @for (step of processSteps(); track step.title; let i = $index) {
+          <div class="flex flex-1 flex-col items-center">
+            <div
+              class="mb-3 max-w-36 text-center transition-all duration-700 ease-out"
+              [class.opacity-0]="!processAnimated()"
+              [class.translate-y-3]="!processAnimated()"
+              [style.transition-delay.ms]="i * 450 + 350"
+            >
+              <h3 class="text-xl font-bold text-brand-navy">{{ step.title }}</h3>
+              <p class="mt-1 text-[11px] font-semibold text-brand-blue">{{ step.duration }}</p>
+              <p class="mt-1 text-[11px] text-slate-400">{{ step.caption }}</p>
+            </div>
+            <span
+              class="h-3.5 w-3.5 shrink-0 rounded-full bg-brand-blue ring-4 ring-brand-blue/15 transition-opacity duration-500 ease-out"
+              [class.opacity-0]="!processAnimated()"
+              [style.transition-delay.ms]="i * 450 + 250"
+            ></span>
+            <span
+              class="w-px shrink-0 bg-gradient-to-b from-brand-blue/60 to-brand-blue/5 transition-[height] duration-[800ms] ease-out"
+              [style.height.px]="processAnimated() ? stepHeights[i] : 0"
+              [style.transition-delay.ms]="i * 450"
+            ></span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="mt-8 hidden items-center justify-center gap-y-3 md:flex md:flex-nowrap md:justify-between">
+      @for (step of processSteps(); track step.title; let i = $index) {
+        <div class="flex items-center">
+          <div class="flex items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 shadow-sm ring-1 ring-slate-100">
+            <span class="whitespace-nowrap text-sm font-semibold text-brand-navy">{{ t().howItWorks.stepLabel }} {{ i + 1 }}</span>
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-blue text-white">
+              <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" [attr.d]="step.iconPath" />
+              </svg>
+            </span>
+          </div>
+          @if (i < processSteps().length - 1) {
+            <svg viewBox="0 0 24 24" fill="none" class="mx-1 h-4 w-4 shrink-0 text-slate-300">
+              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7" />
+            </svg>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CHIFFRES CLES -->
+<section appScrollReveal class="bg-white pb-16 mt-12">
+  <div class="mx-auto max-w-7xl">
+    <div #statsSection class="grid gap-8 bg-[#00008F] px-8 py-10 text-white sm:grid-cols-2 lg:grid-cols-4">
+      @for (stat of keyStats(); track stat.label; let i = $index) {
+        <div class="flex items-center justify-center gap-4 text-center sm:text-left">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/10">
+            <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+              <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" [attr.d]="stat.iconPath" />
+            </svg>
+          </span>
+          <div>
+            <p class="text-4xl font-bold tabular-nums">{{ formatStat(statValues[i]()) }}{{ stat.suffix }}</p>
+            <p class="text-sm text-white/70">{{ stat.label }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CONTRATS -->
+<section appScrollReveal class="bg-white px-6 py-16 sm:px-10">
+  <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
+    <div>
+      <span class="inline-flex items-center gap-2 rounded-full bg-brand-blue/10 px-3 py-1 text-xs font-semibold text-brand-blue">
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>
+        {{ t().contracts.badge }}
+      </span>
+      <h2 class="mt-4 text-3xl font-bold leading-tight text-brand-navy sm:text-4xl">
+        {{ t().contracts.heading }}
+      </h2>
+      <p class="mt-3 max-w-lg text-sm text-slate-600">
+        {{ t().contracts.paragraph }}
+      </p>
+
+      <ul class="mt-8 space-y-4">
+        @for (feature of contractFeatures(); track feature.title) {
+          <li class="flex items-start gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-blue/10 text-brand-blue">
+              <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-brand-navy">{{ feature.title }}</p>
+              <p class="text-xs text-slate-500">{{ feature.description }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <a
+        routerLink="/auth/login"
+        class="mt-8 inline-flex items-center gap-2 rounded-full bg-[#00008F] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#00008F]/90"
+      >
+        {{ t().contracts.cta }}
+      </a>
+    </div>
+
+    <div class="rounded-[2rem] bg-gradient-to-br from-brand-navy to-brand-blue p-1.5 shadow-xl">
+      <img src="/contrat.jpg" alt="Aperçu d'un contrat AXA" class="h-full w-full rounded-[1.75rem] object-cover" />
+    </div>
+  </div>
+</section>
+
+<!-- TEMOIGNAGES -->
+<section appScrollReveal class="overflow-hidden bg-slate-50 py-16">
+  <div class="mx-auto max-w-2xl px-6 text-center sm:px-10">
+    <h2 class="text-3xl font-bold text-brand-navy sm:text-4xl">{{ t().testimonials.heading }}</h2>
+    <p class="mt-3 text-sm text-slate-500 sm:text-base">{{ t().testimonials.subtitle }}</p>
+  </div>
+
+  <div class="mt-12 space-y-6">
+    <div class="marquee-row">
+      <div class="marquee-track marquee-track--left">
+        @for (item of testimonialRow1(); track item.author) {
+          <article class="testimonial-card border border-gray-200 bg-white" [class]="item.colorClass">
+            <p class="text-sm leading-relaxed text-brand-navy/90">&ldquo;{{ item.quote }}&rdquo;</p>
+            <div class="mt-5 flex items-center gap-3">
+              <img [src]="item.avatar" [alt]="item.author" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+              <div>
+                <p class="text-sm font-bold text-brand-navy">{{ item.author }}</p>
+                <p class="text-xs text-brand-navy/60">{{ item.role }}</p>
+              </div>
+            </div>
+          </article>
+        }
+        @for (item of testimonialRow1(); track item.author) {
+          <article class="testimonial-card border border-gray-200 bg-white" [class]="item.colorClass" aria-hidden="true">
+            <p class="text-sm leading-relaxed text-brand-navy/90">&ldquo;{{ item.quote }}&rdquo;</p>
+            <div class="mt-5 flex items-center gap-3">
+              <img [src]="item.avatar" [alt]="item.author" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+              <div>
+                <p class="text-sm font-bold text-brand-navy">{{ item.author }}</p>
+                <p class="text-xs text-brand-navy/60">{{ item.role }}</p>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+
+    <div class="marquee-row">
+      <div class="marquee-track marquee-track--right ">
+        @for (item of testimonialRow2(); track item.author) {
+          <article class="testimonial-card border border-gray-200 bg-white" [class]="item.colorClass">
+            <p class="text-sm leading-relaxed text-brand-navy/90">&ldquo;{{ item.quote }}&rdquo;</p>
+            <div class="mt-5 flex items-center gap-3">
+              <img [src]="item.avatar" [alt]="item.author" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+              <div>
+                <p class="text-sm font-bold text-brand-navy">{{ item.author }}</p>
+                <p class="text-xs text-brand-navy/60">{{ item.role }}</p>
+              </div>
+            </div>
+          </article>
+        }
+        @for (item of testimonialRow2(); track item.author) {
+          <article class="testimonial-card border border-gray-200 bg-white" [class]="item.colorClass" aria-hidden="true">
+            <p class="text-sm leading-relaxed text-brand-navy/90">&ldquo;{{ item.quote }}&rdquo;</p>
+            <div class="mt-5 flex items-center gap-3">
+              <img [src]="item.avatar" [alt]="item.author" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+              <div>
+                <p class="text-sm font-bold text-brand-navy">{{ item.author }}</p>
+                <p class="text-xs text-brand-navy/60">{{ item.role }}</p>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOS PARTENAIRES -->
+<!-- <section appScrollReveal class="bg-white py-24 lg:py-32">
+  <div class="mx-auto max-w-5xl px-5 text-center lg:px-8">
+    <span class="text-sm font-bold uppercase tracking-[0.2em] text-brand-blue">
+      {{ t().partners.badge }}
+    </span>
+
+    <h2 class="mx-auto mt-5 max-w-2xl text-4xl font-bold leading-tight text-brand-navy sm:text-5xl">
+      {{ t().partners.heading1 }} {{ t().partners.heading2 }}
+    </h2>
+
+    <p class="mx-auto mt-6 max-w-xl text-slate-500 leading-7">
+      {{ t().partners.paragraph }}
+    </p>
+
+    <div class="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-5 sm:grid-cols-3">
+      @for (partner of partnerLogos; track partner.name) {
+        <div class="flex h-28 items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 shadow-sm">
+          <img class="max-h-16 w-auto object-contain" [src]="partner.logo" [alt]="partner.name" />
+        </div>
+      }
+    </div>
+  </div>
+</section> -->
+
+<!-- BANDEAU CTA -->
+<section appScrollReveal class="">
+  <div class="relative mx-auto max-w-7xl overflow-hidden bg-gradient-to-r from-brand-navy to-brand-blue px-8 py-12 text-white sm:px-12">
+    <img src="/hero.png" alt="" class="absolute inset-0 h-full w-full object-cover opacity-15" />
+    <div class="relative z-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-2xl font-bold sm:text-3xl">{{ t().cta.heading }}</h2>
+        <p class="mt-2 max-w-xl text-white/80">
+          {{ t().cta.paragraph }}
+        </p>
+      </div>
+      <a
+        routerLink="/auth/login"
+        class="shrink-0 rounded-md bg-white px-6 py-3 text-sm font-semibold text-brand-navy transition-colors hover:bg-white/90"
+      >
+        {{ t().cta.button }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section appScrollReveal class="bg-white px-6 py-16 sm:px-10">
+  <div class="mx-auto max-w-7xl">
+    <span class="inline-flex items-center gap-2 rounded-full bg-brand-blue/10 px-3 py-1 text-xs font-semibold text-brand-blue">
+      <span class="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>
+      {{ t().contact.badge }}
+    </span>
+    <h2 class="mt-4 max-w-xl text-3xl font-bold leading-tight text-brand-navy sm:text-4xl">
+      {{ t().contact.heading }}
+    </h2>
+
+    <div class="mt-10 grid overflow-hidden rounded-3xl ring-1 ring-slate-100 lg:grid-cols-5">
+      <!-- Coordonnées -->
+      <div class="relative overflow-hidden bg-gradient-to-br from-brand-navy to-[#00008F] px-8 py-10 text-white lg:col-span-2 lg:px-10 lg:py-12">
+        <img src="/hero.png" alt="" class="absolute inset-0 h-full w-full object-cover opacity-10" />
+        <div class="relative z-10">
+          <h3 class="text-xl font-bold">{{ t().contact.coordTitle }}</h3>
+          <p class="mt-2 text-sm text-white/70">
+            {{ t().contact.coordSubtitle }}
+          </p>
+
+          <ul class="mt-8 space-y-6">
+            @for (item of contactInfo(); track item.label) {
+              <li class="flex items-start gap-4">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+                  <i [class]="item.iconClass" class="text-lg" aria-hidden="true"></i>
+                </span>
+                <div>
+                  <p class="text-xs text-white/60">{{ item.label }}</p>
+                  <p class="mt-0.5 text-sm font-medium">{{ item.value }}</p>
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="bg-white px-8 py-10 lg:col-span-3 lg:px-10 lg:py-12">
+        @if (contactSubmitted()) {
+          <div class="flex h-full min-h-[360px] flex-col items-center justify-center text-center">
+            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+              <i class="ri-check-line text-2xl" aria-hidden="true"></i>
+            </span>
+            <h3 class="mt-5 text-lg font-bold text-brand-navy">{{ t().contact.successTitle }}</h3>
+            <p class="mt-2 max-w-sm text-sm text-slate-500">
+              {{ t().contact.successMessage }}
+            </p>
+          </div>
+        } @else {
+          <form (submit)="$event.preventDefault(); submitContact()" novalidate>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="contact-name" class="text-sm font-medium text-brand-navy">
+                  {{ t().contact.nameLabel }} <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  autocomplete="name"
+                  [value]="contactName()"
+                  (input)="onContactNameInput($event)"
+                  [attr.aria-invalid]="contactTouched() && !contactNameValid() ? true : null"
+                  [attr.aria-describedby]="contactTouched() && !contactNameValid() ? 'contact-name-error' : null"
+                  class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                  [class]="contactTouched() && !contactNameValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-brand-blue'"
+                  [attr.placeholder]="t().contact.namePlaceholder"
+                />
+                @if (contactTouched() && !contactNameValid()) {
+                  <p id="contact-name-error" class="mt-1.5 text-xs text-rose-500">{{ t().contact.nameError }}</p>
+                }
+              </div>
+
+              <div>
+                <label for="contact-company" class="text-sm font-medium text-brand-navy">{{ t().contact.companyLabel }}</label>
+                <input
+                  id="contact-company"
+                  type="text"
+                  autocomplete="organization"
+                  [value]="contactCompany()"
+                  (input)="onContactCompanyInput($event)"
+                  class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                  [attr.placeholder]="t().contact.companyPlaceholder"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="contact-email" class="text-sm font-medium text-brand-navy">
+                  {{ t().contact.emailLabel }} <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  autocomplete="email"
+                  [value]="contactEmail()"
+                  (input)="onContactEmailInput($event)"
+                  [attr.aria-invalid]="contactTouched() && !contactEmailValid() ? true : null"
+                  [attr.aria-describedby]="contactTouched() && !contactEmailValid() ? 'contact-email-error' : null"
+                  class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                  [class]="contactTouched() && !contactEmailValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-brand-blue'"
+                  [attr.placeholder]="t().contact.emailPlaceholder"
+                />
+                @if (contactTouched() && !contactEmailValid()) {
+                  <p id="contact-email-error" class="mt-1.5 text-xs text-rose-500">{{ t().contact.emailError }}</p>
+                }
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="contact-message" class="text-sm font-medium text-brand-navy">
+                  {{ t().contact.messageLabel }} <span class="text-rose-500">*</span>
+                </label>
+                <textarea
+                  id="contact-message"
+                  rows="4"
+                  [value]="contactMessage()"
+                  (input)="onContactMessageInput($event)"
+                  [attr.aria-invalid]="contactTouched() && !contactMessageValid() ? true : null"
+                  [attr.aria-describedby]="contactTouched() && !contactMessageValid() ? 'contact-message-error' : null"
+                  class="mt-1.5 w-full rounded-lg border px-3 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                  [class]="contactTouched() && !contactMessageValid() ? 'border-rose-300 focus:border-rose-400' : 'border-slate-200 focus:border-brand-blue'"
+                  [attr.placeholder]="t().contact.messagePlaceholder"
+                ></textarea>
+                @if (contactTouched() && !contactMessageValid()) {
+                  <p id="contact-message-error" class="mt-1.5 text-xs text-rose-500">{{ t().contact.messageError }}</p>
+                }
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#00008F] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#00008F]/90"
+            >
+              {{ t().contact.submit }}
+              <i class="ri-arrow-right-line text-base" aria-hidden="true"></i>
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+</section>

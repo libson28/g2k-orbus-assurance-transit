@@ -1,0 +1,30 @@
+<div class="px-6 py-6">
+  <div>
+    <h1 class="text-2xl font-bold text-brand-navy">Mon profil</h1>
+    <p class="mt-1 text-sm text-slate-500">Informations de votre compte agent assureur.</p>
+  </div>
+
+  <div class="mt-6 max-w-md rounded-2xl border border-slate-100 bg-white p-6">
+    <div class="flex items-center gap-3">
+      <span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand-navy text-sm font-bold text-white">{{ compte().initiales }}</span>
+      <div>
+        <p class="text-sm font-semibold text-brand-navy">{{ compte().nom }}</p>
+        <p class="text-xs text-slate-400">{{ compte().profil }}</p>
+      </div>
+    </div>
+    <dl class="mt-5 space-y-3 border-t border-slate-100 pt-4 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-slate-400">Email</dt>
+        <dd class="font-medium text-brand-navy">{{ compte().email }}</dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-slate-400">Téléphone</dt>
+        <dd class="font-medium text-brand-navy">{{ compte().telephone }}</dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-slate-400">Compagnie</dt>
+        <dd class="font-medium text-brand-navy">{{ compte().compagnie }}</dd>
+      </div>
+    </dl>
+  </div>
+</div>

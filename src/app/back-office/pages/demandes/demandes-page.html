@@ -1,0 +1,295 @@
+<div class="px-6 py-6">
+  <div>
+    <h1 class="text-2xl font-bold text-brand-navy">Demandes de cotation</h1>
+    <p class="mt-1 text-sm text-slate-500">Contrôlez chaque demande, demandez des compléments ou cotez les polices.</p>
+  </div>
+
+  <div class="mt-5 flex flex-wrap gap-2">
+    @for (f of filters; track f.key) {
+      <button
+        type="button"
+        (click)="setFilter(f.key)"
+        class="rounded-full px-4 py-1.5 text-xs font-semibold transition-colors"
+        [class]="activeFilter() === f.key ? 'bg-[#1F5DA8] text-white' : 'bg-white text-slate-500 ring-1 ring-slate-200 hover:bg-slate-50'"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+
+  <div class="mt-5">
+    <app-data-table [columns]="columns" [minWidth]="760">
+      <tbody class="divide-y divide-slate-100">
+        @for (d of filteredDemandes(); track d.numero) {
+          <tr class="cursor-pointer transition-colors hover:bg-slate-50" (click)="openDemande(d.numero)">
+            <td class="px-5 py-3 font-mono text-xs font-medium text-brand-navy">{{ d.numero }}</td>
+            <td class="px-5 py-3 text-slate-600">{{ d.souscripteur }}</td>
+            <td class="px-5 py-3 font-mono text-xs text-slate-500">{{ d.contrat }}</td>
+            <td class="px-5 py-3 tabular-nums text-slate-500">{{ d.polices.length }}</td>
+            <td class="px-5 py-3">
+              <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="d.statutClass">{{ d.statut }}</span>
+            </td>
+            <td class="px-5 py-3 text-right">
+              <span class="text-xs font-semibold text-[#1F5DA8]">Ouvrir →</span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="px-5 py-8 text-center text-sm text-slate-400">Aucune demande dans ce statut.</td>
+          </tr>
+        }
+      </tbody>
+    </app-data-table>
+  </div>
+</div>
+
+<!-- SIDE DRAWER (backdrop stays below the persistent nav so navigation always works) -->
+<div
+  class="fixed inset-0 z-30 bg-brand-navy/40"
+  [style.opacity]="drawerOpen() ? 1 : 0"
+  [style.transition]="ready() ? 'opacity 300ms cubic-bezier(0.4,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+  (click)="closeDrawer()"
+></div>
+
+<aside
+  class="fixed right-0 top-0 z-[60] flex h-full w-full max-w-lg flex-col bg-white shadow-2xl ease-out"
+  [style.transform]="drawerOpen() ? 'translateX(0)' : 'translateX(100%)'"
+  [style.transition]="ready() ? 'transform 300ms cubic-bezier(0,0,0.2,1)' : 'none'"
+  [class.pointer-events-none]="!drawerOpen()"
+>
+    @if (selectedDemande(); as demande) {
+      <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
+        <div>
+          <p class="font-mono text-xs font-medium text-[#1F5DA8]">Demande de cotation {{ demande.numero }}</p>
+          <p class="mt-1 text-sm text-slate-500">{{ demande.souscripteur }}</p>
+        </div>
+        <button type="button" (click)="closeDrawer()" class="text-slate-400 hover:text-brand-navy" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+            <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-6 py-5">
+        <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="demande.statutClass">{{ demande.statut }}</span>
+
+        <div class="mt-5 space-y-5">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Contrat</p>
+            <p class="mt-1 font-mono text-sm font-medium text-brand-navy">{{ demande.contrat }}</p>
+            <p class="mt-0.5 text-xs text-slate-500">{{ demande.contratLibelle }}</p>
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Opération</p>
+            <p class="mt-1 text-sm text-slate-600">{{ demande.description }}</p>
+            <p class="mt-1 text-xs font-medium text-brand-navy">{{ demande.periode }}</p>
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Informations sur le transport</p>
+            <dl class="mt-2 grid gap-3 sm:grid-cols-2">
+              <div>
+                <dt class="text-xs text-slate-400">Mode de transport</dt>
+                <dd class="mt-0.5 text-sm font-medium text-brand-navy">{{ demande.transport.modeTransport }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-400">Type de couverture</dt>
+                <dd class="mt-0.5 text-sm font-medium text-brand-navy">{{ demande.transport.typeCouverture }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-400">Date de départ</dt>
+                <dd class="mt-0.5 text-sm text-slate-600">{{ demande.transport.dateDepart }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-400">Date d'arrivée</dt>
+                <dd class="mt-0.5 text-sm text-slate-600">{{ demande.transport.dateArrivee }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-400">Destination</dt>
+                <dd class="mt-0.5 text-sm text-slate-600">{{ demande.transport.destination }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs text-slate-400">Transporteur</dt>
+                <dd class="mt-0.5 text-sm text-slate-600">{{ demande.transport.transporteur || '—' }}</dd>
+              </div>
+              <div class="sm:col-span-2">
+                <dt class="text-xs text-slate-400">N° véhicule / navire / conteneur</dt>
+                <dd class="mt-0.5 text-sm text-slate-600">{{ demande.transport.numeroVehicule || '—' }}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Polices demandées</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              @for (p of demande.polices; track p.code) {
+                <span class="rounded-full bg-[#1F5DA8]/10 px-2.5 py-1 text-xs font-medium text-[#1F5DA8]">
+                  {{ p.libelle }}
+                  @if (p.montant) {
+                    · {{ formatFcfa(p.montant) }} FCFA
+                  }
+                </span>
+              }
+            </div>
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Documents transmis ({{ demande.documents.length }})</p>
+            <ul class="mt-2 space-y-1.5">
+              @for (doc of demande.documents; track doc) {
+                <li>
+                  <a
+                    href="/contract.png"
+                    download
+                    class="flex items-center gap-2 rounded-lg px-1.5 py-1 text-xs text-slate-600 transition-colors hover:bg-slate-50 hover:text-[#1F5DA8]"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 shrink-0 text-slate-400">
+                      <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                    <span class="font-mono">{{ doc }}</span>
+                    <svg viewBox="0 0 24 24" fill="none" class="ml-auto h-3.5 w-3.5 shrink-0 text-slate-300">
+                      <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M4 19.5h16" />
+                    </svg>
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+
+        @if (demande.statut === 'Complément demandé') {
+          <div class="mt-6 rounded-xl bg-rose-50/60 p-4">
+            <p class="text-xs font-semibold text-rose-600">Complément demandé le {{ demande.complementDate }}</p>
+            <p class="mt-2 text-sm text-slate-600">{{ demande.complementMessage }}</p>
+            <p class="mt-3 text-xs text-slate-400">En attente de la réponse du souscripteur.</p>
+          </div>
+        }
+
+        @if (demande.statut === "En attente d'acceptation") {
+          <div class="mt-6 rounded-xl bg-indigo-50/60 p-4">
+            <p class="text-xs font-semibold text-indigo-600">Cotation envoyée le {{ demande.cotationDate }}</p>
+            <div class="mt-3 space-y-2 text-sm">
+              @for (p of demande.polices; track p.code) {
+                <div class="flex items-center justify-between text-slate-600">
+                  <span>{{ p.libelle }}</span>
+                  <span class="font-medium tabular-nums">{{ formatFcfa(p.montant ?? 0) }} FCFA</span>
+                </div>
+              }
+              <div class="flex items-center justify-between border-t border-indigo-100 pt-2 font-semibold text-brand-navy">
+                <span>Total</span>
+                <span class="tabular-nums">{{ formatFcfa(totalMontant(demande)) }} FCFA</span>
+              </div>
+            </div>
+            <p class="mt-3 text-xs text-slate-400">En attente d'acceptation par le souscripteur.</p>
+          </div>
+        }
+
+        @if (demande.statut === 'Acceptée') {
+          <div class="mt-6 rounded-xl bg-emerald-50/60 p-4">
+            <p class="text-xs font-semibold text-emerald-600">Cotation acceptée le {{ demande.acceptationDate }}</p>
+            <div class="mt-3 space-y-2 text-sm">
+              @for (p of demande.polices; track p.code) {
+                <div class="flex items-center justify-between text-slate-600">
+                  <span>{{ p.libelle }}</span>
+                  <span class="font-medium tabular-nums">{{ formatFcfa(p.montant ?? 0) }} FCFA</span>
+                </div>
+              }
+              <div class="flex items-center justify-between border-t border-emerald-100 pt-2 font-semibold text-brand-navy">
+                <span>Total</span>
+                <span class="tabular-nums">{{ formatFcfa(totalMontant(demande)) }} FCFA</span>
+              </div>
+            </div>
+            <p class="mt-3 text-xs text-slate-400">
+              L'opération est liée au contrat {{ demande.contrat }}. Le scan du contrat sera transmis au souscripteur.
+            </p>
+          </div>
+        }
+
+        @if (demande.statut === 'Nouvelle demande' || demande.statut === 'À coter') {
+          <div class="mt-6 border-t border-slate-100 pt-5">
+            @if (actionMode() === null) {
+              <div class="flex gap-3">
+                <button
+                  type="button"
+                  (click)="setActionMode('complement')"
+                  class="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-brand-navy transition-colors hover:bg-slate-50"
+                >
+                  Demander un complément
+                </button>
+                <button
+                  type="button"
+                  (click)="setActionMode('cotation')"
+                  class="flex-1 rounded-xl bg-[#1F5DA8] py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+                >
+                  Effectuer la cotation
+                </button>
+              </div>
+            }
+
+            @if (actionMode() === 'complement') {
+              <div class="rounded-xl bg-rose-50/60 p-4">
+                <label class="text-xs font-semibold text-rose-600">Message au transitaire</label>
+                <textarea
+                  rows="3"
+                  [value]="complementMessage()"
+                  (input)="onComplementInput($event)"
+                  placeholder="Ex : Merci de fournir le document relatif à la valeur des marchandises."
+                  class="mt-2 w-full rounded-lg border border-rose-200 bg-white px-3 py-2 text-sm text-brand-navy placeholder:text-slate-400 focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                ></textarea>
+                <div class="mt-3 flex justify-end gap-2">
+                  <button type="button" (click)="setActionMode(null)" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-white">Annuler</button>
+                  <button
+                    type="button"
+                    (click)="sendComplement()"
+                    [disabled]="!complementMessage().trim()"
+                    class="rounded-lg bg-rose-500 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    Envoyer la demande
+                  </button>
+                </div>
+              </div>
+            }
+
+            @if (actionMode() === 'cotation') {
+              <div class="rounded-xl bg-[#1F5DA8]/5 p-4">
+                <p class="text-xs font-semibold text-[#1F5DA8]">Montant coté par police</p>
+                <div class="mt-3 space-y-2.5">
+                  @for (p of demande.polices; track p.code) {
+                    <div class="flex items-center justify-between gap-3">
+                      <label class="text-sm text-slate-600">{{ p.libelle }}</label>
+                      <div class="flex items-center gap-1.5">
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="0"
+                          (input)="onMontantInput(p.code, $event)"
+                          class="w-32 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-right text-sm text-brand-navy focus:border-[#1F5DA8] focus:outline-none focus:ring-2 focus:ring-[#1F5DA8]/20"
+                        />
+                        <span class="text-xs text-slate-400">FCFA</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+                <div class="mt-3 flex items-center justify-between border-t border-[#1F5DA8]/15 pt-3 text-sm font-semibold text-brand-navy">
+                  <span>Total</span>
+                  <span class="tabular-nums">{{ formatFcfa(cotationTotal()) }} FCFA</span>
+                </div>
+                <div class="mt-3 flex justify-end gap-2">
+                  <button type="button" (click)="setActionMode(null)" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-white">Annuler</button>
+                  <button
+                    type="button"
+                    (click)="sendCotation()"
+                    class="rounded-lg bg-[#1F5DA8] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1F5DA8]/90"
+                  >
+                    Envoyer au souscripteur
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+</aside>

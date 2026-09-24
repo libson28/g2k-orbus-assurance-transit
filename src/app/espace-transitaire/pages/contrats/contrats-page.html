@@ -1,0 +1,93 @@
+<div class="px-6 py-6">
+  <div>
+    <h1 class="text-2xl font-bold text-[#00008F]">Contrats</h1>
+    <p class="mt-1 text-sm text-slate-500">Les contrats établis par l'assureur lors de la création de votre compte.</p>
+  </div>
+
+  <div class="mt-6 space-y-3">
+    @for (contrat of contrats; track contrat.numero) {
+      <div class="overflow-hidden rounded-2xl border border-slate-100 bg-white">
+        <button
+          type="button"
+          (click)="toggle(contrat.numero)"
+          class="flex w-full flex-wrap items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-slate-50"
+        >
+          <div>
+            <p class="font-mono text-xs font-medium text-[#1F5DA8]">{{ contrat.numero }}</p>
+            <p class="mt-0.5 text-sm font-semibold text-brand-navy">{{ contrat.libelle }}</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="contrat.statutClass">{{ contrat.statut }}</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              class="h-4 w-4 shrink-0 text-slate-400 transition-transform"
+              [class.rotate-180]="expanded() === contrat.numero"
+            >
+              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+            </svg>
+          </div>
+        </button>
+
+        @if (expanded() === contrat.numero) {
+          <div class="border-t border-slate-100 px-5 py-4">
+            <dl class="grid gap-4 sm:grid-cols-3">
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Numéro de contrat</dt>
+                <dd class="mt-1 font-mono text-sm font-medium text-brand-navy">{{ contrat.numero }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Date de début</dt>
+                <dd class="mt-1 text-sm font-medium text-brand-navy">{{ contrat.dateDebut }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Date de fin</dt>
+                <dd class="mt-1 text-sm font-medium text-brand-navy">{{ contrat.dateFin }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Montant total</dt>
+                <dd class="mt-1 text-sm font-semibold text-brand-navy">{{ contrat.montantTotal }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Encours</dt>
+                <dd class="mt-1 text-sm font-semibold text-brand-navy">{{ contrat.encours }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Solde disponible</dt>
+                <dd class="mt-1 text-sm font-semibold text-[#1F5DA8]">{{ contrat.solde }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Statut</dt>
+                <dd class="mt-1">
+                  <span class="rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap" [class]="contrat.statutClass">{{ contrat.statut }}</span>
+                </dd>
+              </div>
+              <div class="sm:col-span-3">
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Document</dt>
+                <dd class="mt-2">
+                  <div class="group relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                    <img
+                      src="/contract.png"
+                      alt="Document du contrat {{ contrat.numero }}"
+                      class="max-h-96 w-full object-contain"
+                    />
+                    <a
+                      href="/contract.png"
+                      download
+                      class="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-lg bg-white/95 px-3 py-1.5 text-xs font-semibold text-[#1F5DA8] shadow-sm ring-1 ring-slate-200 transition-colors hover:bg-white"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5">
+                        <path stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M4 19.5h16" />
+                      </svg>
+                      Télécharger
+                    </a>
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<style>
+  @keyframes auth-cloud-drift-1 {
+    0% { transform: translate(-64%, -10%) scale(1); }
+    50% { transform: translate(-30%, 12%) scale(1.3); }
+    100% { transform: translate(-64%, -10%) scale(1); }
+  }
+  @keyframes auth-cloud-drift-2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(70px, -60px) scale(1.25); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+  .auth-cloud-1 {
+    animation: auth-cloud-drift-1 12s ease-in-out infinite;
+    will-change: transform;
+  }
+  .auth-cloud-2 {
+    animation: auth-cloud-drift-2 9s ease-in-out infinite;
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .auth-cloud-1,
+    .auth-cloud-2 {
+      animation: none;
+    }
+  }
+</style>
+
+<div class="grid min-h-screen lg:grid-cols-2">
+  <div class="relative hidden overflow-hidden bg-brand-navy p-10 lg:flex lg:flex-col lg:justify-between xl:p-14">
+    <img src="/shell.png" alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-navy/95 via-brand-navy/70 to-brand-blue/75"></div>
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="auth-cloud-1 absolute left-1/2 top-[6%] h-[28rem] w-[28rem] rounded-full bg-white/30 blur-[70px]"></div>
+      <div class="auth-cloud-2 absolute -bottom-32 -left-16 h-72 w-72 rounded-full bg-brand-blue-light/25 blur-3xl"></div>
+    </div>
+
+    <a routerLink="/accueil" class="relative z-10 flex items-center gap-2">
+      <img src="/logo-axa.png" alt="AXA" class="h-12 w-auto" />
+    </a>
+
+    <div class="relative z-10">
+      <span class="inline-flex items-center rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
+        {{ badge() }}
+      </span>
+
+      <h1 class="mt-6 max-w-sm text-4xl font-bold leading-tight text-white xl:text-5xl">
+        {{ title() }}
+      </h1>
+      <p class="mt-4 max-w-sm text-white/75">{{ subtitle() }}</p>
+
+      @if (steps().length) {
+        <div class="mt-10 flex gap-3">
+          @for (step of steps(); track step.label; let i = $index) {
+            <div
+              class="flex-1 rounded-2xl p-4 transition-colors"
+              [class]="i + 1 === activeStep() ? 'bg-white text-brand-navy' : 'bg-white/10 text-white/70'"
+            >
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold"
+                [class]="i + 1 === activeStep() ? 'bg-brand-navy text-white' : 'bg-white/15 text-white'"
+              >
+                {{ i + 1 }}
+              </span>
+              <p class="mt-3 text-xs font-medium leading-snug">{{ step.label }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="flex flex-col justify-center overflow-y-auto bg-white px-6 py-8 sm:px-12 sm:py-10 lg:px-16">
+    <div class="mx-auto w-full max-w-sm">
+      <a routerLink="/accueil" class="mb-6 flex items-center gap-2 lg:hidden">
+        <img src="/logo.png" alt="AXA" class="h-8 w-auto" />
+      </a>
+
+      <ng-content />
+    </div>
+  </div>
+</div>
