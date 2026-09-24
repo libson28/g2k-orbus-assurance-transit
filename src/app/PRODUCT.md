@@ -1,4 +1,4 @@
-ORBUS ASSURANCES
+AXA ASSURANCE
 
 Profil transitaire
 
@@ -249,7 +249,7 @@ Souscripteur                    Souscripteur associé à l'opération
 
 Libellé opération               Libellé de l'opération
 
-Dossier ORBUS                   Dossier ORBUS associé
+Dossier AXA Assurance                   Dossier AXA Assurance associé
 
 Contrat lié                     Contrat utilisé pour l'opération
 
@@ -269,14 +269,14 @@ Cotations reçues
 Opérations en cours
 Contrats actifs
 Notifications et actions à traiter
-2. Dossiers ORBUS
-Liste des dossiers ORBUS
+2. Dossiers AXA Assurance
+Liste des dossiers AXA Assurance
 Recherche d'un dossier
 Consultation du détail d'un dossier
-Rapatriement d'un dossier ORBUS
+Rapatriement d'un dossier AXA Assurance
 Utilisation d'un dossier pour créer une demande de cotation
 
-Le dossier ORBUS constitue le point de départ du workflow de cotation.
+Le dossier AXA Assurance constitue le point de départ du workflow de cotation.
 
 3. Contrats
 Liste des contrats du souscripteur
@@ -296,7 +296,7 @@ Le document définit précisément ces informations dans la structure d'un contr
 Liste des opérations
 Numéro de l'opération
 Libellé
-Dossier ORBUS associé
+Dossier AXA Assurance associé
 Contrat lié
 Polices associées
 Montant
@@ -311,7 +311,7 @@ C'est le workflow principal du portail.
 
 Le transitaire :
 
-Rapatrie un dossier ORBUS
+Rapatrie un dossier AXA Assurance
 Sélectionne un contrat
 Sélectionne les polices d'assurance
 Définit les spécificités de l'opération
@@ -365,7 +365,7 @@ Le brief précise que l'Agent transitaire est rattaché à un souscripteur.
 Pour le POC, je garderais finalement 6 modules visibles
 
 Dashboard
-Dossiers ORBUS
+Dossiers AXA Assurance
 Contrats
 Opérations
 Cotations
@@ -373,4 +373,4 @@ Notifications
 
 Et dans le header : Profil / compte.
 
-Le bouton « Nouvelle demande de cotation » peut être particulièrement visible dans le Dashboard et dans Dossiers ORBUS, puisqu'il constitue le parcours métier central.
+Le bouton « Nouvelle demande de cotation » peut être particulièrement visible dans le Dashboard et dans Dossiers AXA Assurance, puisqu'il constitue le parcours métier central.

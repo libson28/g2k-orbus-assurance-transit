@@ -110,6 +110,6 @@ export class DashboardShell {
   protected logout(): void {
     this.authService.logout();
     this.router.navigateByUrl('/accueil');
-    this.toast.info('Déconnecté', 'À bientôt sur ORBUS Assurances.');
+    this.toast.info('Déconnecté', 'À bientôt sur AXA Assurances.');
   }
 }
